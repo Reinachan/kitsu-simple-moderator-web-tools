@@ -1,0 +1,49 @@
+:root {
+	background-color: #282c34;
+	color: white;
+}
+
+main {
+	display: grid;
+	justify-content: center;
+}
+
+form {
+	display: grid;
+
+	max-width: 500px;
+
+	padding-block: 1em;
+	border-block-end: 2px solid black;
+
+	legend {
+		font-size: 1.2em;
+		font-weight: 700;
+		margin-bottom: 0.2em;
+	}
+
+	label {
+		display: grid;
+		margin-block-end: 0.5rem;
+	}
+
+	input,
+	select {
+		height: 2rem;
+		border: 1px solid #526589;
+		border-radius: 5px;
+		background-color: #384762;
+		color: white;
+	}
+
+	input[type='submit'] {
+		width: 5rem;
+		height: 2rem;
+		background-color: rgb(65, 65, 225);
+		color: white;
+		justify-self: center;
+		border: 1px solid rgb(120, 120, 255);
+		border-radius: 5px;
+		margin-block-start: 0.5rem;
+	}
+}
