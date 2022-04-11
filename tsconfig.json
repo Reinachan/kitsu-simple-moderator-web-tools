@@ -20,7 +20,8 @@
 			"assets/*": ["./src/assets/*"],
 			"components/*": ["./src/components/*"],
 			"src/*": ["./src/*"]
-		}
+		},
+		"types": ["@honkhonk/vite-plugin-svgr/client"]
 	},
 	"include": ["src"],
 	"references": [{ "path": "./tsconfig.node.json" }]

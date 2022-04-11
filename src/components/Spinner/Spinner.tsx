@@ -1,19 +1,21 @@
 import React, { HTMLProps } from 'react';
 
-import { ReactComponent as SpinnerImage } from 'assets/spinner.svg';
+import SpinnerImage from 'assets/spinner.svg?component';
 
 import styles from './styles.module.css';
+
+interface SpinnerProps {
+	className?: string;
+	size?: React.SVGAttributes<SVGElement>['height'];
+}
 
 export default function Spinner({
 	className,
 	size = '1.2em',
-}: {
-	className?: string;
-	size?: React.SVGAttributes<SVGElement>['height'];
-}): JSX.Element {
+}: SpinnerProps): JSX.Element {
 	return (
 		<SpinnerImage
-			className={[styles.spinner, className].join(' ')}
+			className={`${styles.spinner} ${className}`}
 			height={size}
 			width={size}
 		/>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Login from './Login/Login';
-import LockPost from './actions/LockPost';
-import UnlockPost from './actions/UnlockPost';
+import LockUnlockPost from './actions/LockUnlockPost';
 
 function App() {
 	const [token, setToken] = useState('');
@@ -9,12 +8,13 @@ function App() {
 	return (
 		<main>
 			<h1>Simple Kitsu Moderator Tools</h1>
-			<Login setToken={setToken} />
+
+			{!token ? <Login setToken={setToken} /> : <></>}
 
 			{token ? (
 				<>
-					<LockPost token={token} />
-					<UnlockPost token={token} />
+					<LockUnlockPost token={token} type='lock' />
+					<LockUnlockPost token={token} type='unlock' />
 				</>
 			) : (
 				<></>

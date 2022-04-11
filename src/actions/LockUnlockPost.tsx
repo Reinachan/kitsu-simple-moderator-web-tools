@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import useAxios from 'axios-hooks';
 import { Card } from 'components/Card';
 import styles from './styles.module.css';
@@ -8,6 +8,7 @@ import { DropdownInput } from 'components/DropdownInput';
 
 interface Props {
 	token: string;
+	type: 'lock' | 'unlock';
 }
 
 type Reason = 'SPAM' | 'TOO_HEATED' | 'CLOSED';
@@ -48,10 +49,10 @@ mutation unlockPost($id: ID!){
 
 interface Variables {
 	id: number;
-	lockedReason: Reason;
+	lockedReason?: Reason;
 }
 
-export default function LockPost({ token }: Props) {
+export default function LockUnlockPost({ token, type }: Props) {
 	const [url, setUrl] = useState('');
 	const [reason, setReason] = useState<Reason>('CLOSED');
 
@@ -74,39 +75,28 @@ export default function LockPost({ token }: Props) {
 
 		const urlId = trimmedUrl[trimmedUrl.length - 1].split('?')[0];
 
-		console.log(urlId);
-
 		const variables: Variables = {
 			id: parseInt(urlId),
 			lockedReason: reason,
 		};
 
-		console.log(variables);
-
 		execute({
 			data: {
-				query: lockQuery,
+				query: type === 'lock' ? lockQuery : unlockQuery,
 				variables,
 			},
 		});
 	};
 
-	if (loading) {
-		return <p>loading</p>;
-	}
-
-	if (error) {
-		return <p>{JSON.stringify(error.message)}</p>;
-	}
-
-	if (data) {
-		return <p>{JSON.stringify(data.data)}</p>;
-	}
+	const uppercasedType = useMemo(
+		() => type.charAt(0).toUpperCase() + type.slice(1),
+		[type]
+	);
 
 	return (
 		<Card className={styles.card}>
 			<form onSubmit={onSubmit}>
-				<legend>Lock Post</legend>
+				<legend>{uppercasedType} Post</legend>
 				<label>
 					Url
 					<TextInput
@@ -116,21 +106,35 @@ export default function LockPost({ token }: Props) {
 					/>
 				</label>
 
-				<label>
-					Reason
-					<DropdownInput
-						value={reason}
-						onChange={(e) => setReason(e.currentTarget.value as Reason)}>
-						{reasons.map((reasoning, i) => (
-							<option key={reasoning + i} value={reasoning}>
-								{reasoning}
-							</option>
-						))}
-					</DropdownInput>
-				</label>
+				{type === 'lock' ? (
+					<label>
+						Reason
+						<DropdownInput
+							value={reason}
+							onChange={(e) => setReason(e.currentTarget.value as Reason)}>
+							{reasons.map((reasoning, i) => (
+								<option key={reasoning + i} value={reasoning}>
+									{reasoning}
+								</option>
+							))}
+						</DropdownInput>
+					</label>
+				) : (
+					<></>
+				)}
 
-				<Button kind={ButtonKind.PRIMARY}>Submit</Button>
+				<Button kind={ButtonKind.PRIMARY} loading={loading}>
+					{uppercasedType}
+				</Button>
 			</form>
+
+			{!loading && data?.errors?.[0]?.message && (
+				<p>{data.errors[0].message}</p>
+			)}
+
+			{!loading && data && !data?.errors?.[0]?.message && (
+				<p>successfully {type}ed post</p>
+			)}
 		</Card>
 	);
 }

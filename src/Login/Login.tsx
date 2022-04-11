@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import useAxios from 'axios-hooks';
 import { Button, ButtonKind } from 'components/Button';
 import { TextInput } from 'components/TextInput';
@@ -44,7 +44,9 @@ export default function Login({ setToken }: LoginProps) {
 		{ manual: true }
 	);
 
-	const onSubmit = () => {
+	const onSubmit = (e: FormEvent) => {
+		e.preventDefault();
+
 		execute({
 			data: {
 				grant_type: 'password',
@@ -55,21 +57,18 @@ export default function Login({ setToken }: LoginProps) {
 	};
 
 	useEffect(() => {
-		if (data) {
+		console.log('ahoy');
+
+		if (data && !loading && !error) {
+			console.log('no hoy');
+
 			setToken(data.access_token);
 		}
-	}, [data]);
+	}, [data, loading, error]);
 
-	if (loading) {
-		return <p>loading</p>;
-	}
-
-	if (error) {
+	if (!loading && error) {
+		console.error(error);
 		return <p>{JSON.stringify(error)}</p>;
-	}
-
-	if (data) {
-		return <p>Got the token, carry on</p>;
 	}
 
 	return (
@@ -91,7 +90,9 @@ export default function Login({ setToken }: LoginProps) {
 						onChange={(e) => setPassword(e.currentTarget.value)}></TextInput>
 				</label>
 
-				<Button kind={ButtonKind.PRIMARY}>Submit</Button>
+				<Button kind={ButtonKind.PRIMARY} loading={loading}>
+					Submit
+				</Button>
 			</form>
 		</Card>
 	);
