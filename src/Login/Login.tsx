@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import useAxios from 'axios-hooks';
+import { Button, ButtonKind } from 'components/Button';
+import { TextInput } from 'components/TextInput';
+import { Card } from 'components/Card';
+import styles from './styles.module.css';
 
 interface TokenQueryResponse {
 	access_token: string; // Token used in Authorization header
@@ -69,26 +73,26 @@ export default function Login({ setToken }: LoginProps) {
 	}
 
 	return (
-		<div>
+		<Card className={styles.card}>
 			<form onSubmit={onSubmit}>
 				<label>
 					Username
-					<input
+					<TextInput
 						type='text'
 						value={username}
-						onChange={(e) => setUsername(e.currentTarget.value)}></input>
+						onChange={(e) => setUsername(e.currentTarget.value)}></TextInput>
 				</label>
 
 				<label>
 					Password
-					<input
+					<TextInput
 						type='password'
 						value={password}
-						onChange={(e) => setPassword(e.currentTarget.value)}></input>
+						onChange={(e) => setPassword(e.currentTarget.value)}></TextInput>
 				</label>
 
-				<input type='submit' value='Submit' />
+				<Button kind={ButtonKind.PRIMARY}>Submit</Button>
 			</form>
-		</div>
+		</Card>
 	);
 }

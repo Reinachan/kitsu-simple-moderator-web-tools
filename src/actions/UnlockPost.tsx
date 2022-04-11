@@ -1,5 +1,9 @@
 import React, { FormEvent, useState } from 'react';
 import useAxios from 'axios-hooks';
+import { Card } from 'components/Card';
+import styles from './styles.module.css';
+import { TextInput } from 'components/TextInput';
+import { Button, ButtonKind } from 'components/Button';
 
 interface Props {
 	token: string;
@@ -76,18 +80,20 @@ export default function UnlockPost({ token }: Props) {
 	}
 
 	return (
-		<form onSubmit={onSubmit}>
-			<legend>Unlock Post</legend>
-			<label>
-				Url
-				<input
-					type='text'
-					value={url}
-					onChange={(e) => setUrl(e.currentTarget.value)}
-				/>
-			</label>
+		<Card className={styles.card}>
+			<form onSubmit={onSubmit}>
+				<legend>Unlock Post</legend>
+				<label>
+					Url
+					<TextInput
+						type='text'
+						value={url}
+						onChange={(e) => setUrl(e.currentTarget.value)}
+					/>
+				</label>
 
-			<input type='submit' value='Submit' />
-		</form>
+				<Button kind={ButtonKind.PRIMARY}>Submit</Button>
+			</form>
+		</Card>
 	);
 }

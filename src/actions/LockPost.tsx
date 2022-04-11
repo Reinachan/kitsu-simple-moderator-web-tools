@@ -1,12 +1,17 @@
 import { FormEvent, useState } from 'react';
 import useAxios from 'axios-hooks';
+import { Card } from 'components/Card';
+import styles from './styles.module.css';
+import { TextInput } from 'components/TextInput';
+import { Button, ButtonKind } from 'components/Button';
+import { DropdownInput } from 'components/DropdownInput';
 
 interface Props {
 	token: string;
 }
 
-type Reason = 'CLOSED' | 'SPAM' | 'TOO_HEATED';
-const reasons: Reason[] = ['CLOSED', 'SPAM', 'TOO_HEATED'];
+type Reason = 'SPAM' | 'TOO_HEATED' | 'CLOSED';
+const reasons: Reason[] = ['SPAM', 'TOO_HEATED', 'CLOSED'];
 
 const lockQuery = `
 mutation lockPost($id: ID!, $lockedReason: LockedReasonEnum!){
@@ -40,31 +45,6 @@ mutation unlockPost($id: ID!){
   }
 }
 `;
-
-// interface LockUnlockReturn {
-// 	data: {
-// 		post: {
-// 			unlock?: {
-// 				errors?: [
-// 					{
-// 						code?: string;
-// 						message: string;
-// 						path?: string[];
-// 					}
-// 				];
-// 			};
-// 			lock?: {
-// 				errors?: [
-// 					{
-// 						code?: string;
-// 						message: string;
-// 						path?: string[];
-// 					}
-// 				];
-// 			};
-// 		};
-// 	};
-// }
 
 interface Variables {
 	id: number;
@@ -124,31 +104,33 @@ export default function LockPost({ token }: Props) {
 	}
 
 	return (
-		<form onSubmit={onSubmit}>
-			<legend>Lock Post</legend>
-			<label>
-				Url
-				<input
-					type='text'
-					value={url}
-					onChange={(e) => setUrl(e.currentTarget.value)}
-				/>
-			</label>
+		<Card className={styles.card}>
+			<form onSubmit={onSubmit}>
+				<legend>Lock Post</legend>
+				<label>
+					Url
+					<TextInput
+						type='text'
+						value={url}
+						onChange={(e) => setUrl(e.currentTarget.value)}
+					/>
+				</label>
 
-			<label>
-				Reason
-				<select
-					name={reason}
-					onChange={(e) => setReason(e.currentTarget.value as Reason)}>
-					{reasons.map((reasoning, i) => (
-						<option key={reasoning + i} value={reasoning}>
-							{reasoning}
-						</option>
-					))}
-				</select>
-			</label>
+				<label>
+					Reason
+					<DropdownInput
+						value={reason}
+						onChange={(e) => setReason(e.currentTarget.value as Reason)}>
+						{reasons.map((reasoning, i) => (
+							<option key={reasoning + i} value={reasoning}>
+								{reasoning}
+							</option>
+						))}
+					</DropdownInput>
+				</label>
 
-			<input type='submit' value='Submit' />
-		</form>
+				<Button kind={ButtonKind.PRIMARY}>Submit</Button>
+			</form>
+		</Card>
 	);
 }

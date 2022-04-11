@@ -1,0 +1,57 @@
+@import url('./light.css');
+@import url('./dark.css');
+@import url('./fonts.css');
+
+:root {
+  --layer-background: -1000;
+  --layer-base: 0;
+  --layer-overlay: 1000;
+  --layer-modal: 2000;
+  --layer-toaster: 3000;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline-color: var(--focus-outline-color);
+}
+
+body {
+  all: unset;
+  background-color: var(--page-background);
+  color: var(--page-text-color);
+  font-family: var(--font-family-body);
+  font-weight: var(--font-regular);
+  font-size: var(--font-me);
+  min-height: 100vh;
+}
+
+body.scroll-lock {
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-headings);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+main {
+	display: grid;
+	justify-content: center;
+}
+
