@@ -1,6 +1,6 @@
 .card {
   padding: var(--font-me);
-  width: 500px;
+  max-width: 500px;
 }
 
 form {

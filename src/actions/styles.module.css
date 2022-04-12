@@ -1,5 +1,5 @@
 .card {
-  width: 500px;
+  max-width: 500px;
   padding: var(--font-me);
   margin-block-end: var(--font-me);
 
